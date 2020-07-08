@@ -1,0 +1,23 @@
+{
+  "name": "teste_api_agenda",
+  "version": "1.0.0",
+  "description": "Api criada para teste/avaliação",
+  "main": "./src/app.js",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pransteter/teste_api_agenda.git"
+  },
+  "author": "Romulo Pransteter da Silva",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/pransteter/teste_api_agenda/issues"
+  },
+  "homepage": "https://github.com/pransteter/teste_api_agenda#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

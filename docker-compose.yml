@@ -1,0 +1,40 @@
+
+version: '2'
+services:
+  api_agenda_app:
+    image: node:12-alpine
+    container_name: api_agenda_app
+    build: ./
+    command: "/bin/sh -c 'cd /app && npm i && npm run start'"
+    volumes:
+      - ./:/app
+    ports:
+      - "4001:4001"
+    networks:
+      api_agenda_net:
+        ipv4_address: 172.38.0.2
+    environment:
+      NAME: LOCAL
+      NODE_ENV: development
+  api_agenda_database:
+    image: mongo:latest
+    container_name: api_agenda_database
+    ports:
+      - "27017:27017"
+    networks:
+      api_agenda_net:
+        ipv4_address: 172.38.0.4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+networks:
+  api_agenda_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.38.0.0/16
+          gateway: 172.38.0.1
+volumes:
+  appdata:
+    driver: local
