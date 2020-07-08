@@ -2,10 +2,10 @@
   "name": "teste_api_agenda",
   "version": "1.0.0",
   "description": "Api criada para teste/avaliação",
-  "main": "./src/app.js",
+  "main": "./index.js",
   "scripts": {
-    "start": "node ./src/app.js",
-    "test": "test"
+    "start": "node ./index.js",
+    "test": "jest --runInBand --colors"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,18 @@
   "homepage": "https://github.com/pransteter/teste_api_agenda#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^26.1.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(js?)$",
+    "collectCoverage": true,
+    "verbose": true,
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!**/src/core/**"
+    ]
   }
 }

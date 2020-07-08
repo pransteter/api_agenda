@@ -1,3 +1,5 @@
+const contactService = require("../services/contact-service");
+
 module.exports = {
     getAll(req, res) {
         return res.send('GET-ALL \n');
@@ -6,7 +8,19 @@ module.exports = {
         return res.send('CREATE-ONE \n');
     },
     getOne(req, res) {
-        return res.send('GET-ONE \n');
+        let response, code;
+
+        const contactId = req.params.id || null;
+
+        try {
+            response = contactService.getOne(contactId);
+            code = 200;
+        } catch (err) {
+            response = err.message;
+            code = 404;
+        }
+
+        return res.status(code).send(response);
     },
     updateOne(req, res) {
         return res.send('UPDATE-ONE \n');
