@@ -1,6 +1,9 @@
-const express = require('express')
+const express = require('express');
+const routesMiddleware = require('./core/middlewares/routes-middleware');
 
-const app = express()
+const app = express();
+
+app.use(routesMiddleware());
 
 app.get('/health', (req, res) => res.send('It\'s working! \n'));
 
