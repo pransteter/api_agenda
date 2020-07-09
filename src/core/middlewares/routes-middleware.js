@@ -5,7 +5,9 @@ const mainRoute = require('../../routes/main-route');
 
 module.exports = () => {
     const router = getRouter();
+
     mainRoute(router);
     contactRoute(router);
+
     return router;
 };

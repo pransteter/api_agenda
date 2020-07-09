@@ -1,21 +1,25 @@
+const EntityManager = require("../core/database/entity-manager");
+
 module.exports = {
-    getAll() {
+    async getAll() {
+        const em = new EntityManager();
+        console.log(em);
         // fetch all
         return [{ name: 'Romulo Mockman' }];
     },
-    createOne(data) {
+    async createOne(data) {
         // save
         return true;
     },
-    getOne(id) {
+    async getOne(id) {
         // get by id
         return { name: 'Romulo Mockman' };
     },
-    updateOne(id, data) {
+    async updateOne(id, data) {
         // update
         return true;
     },
-    removeOne(id) {
+    async removeOne(id) {
         // remove
         return true;
     }

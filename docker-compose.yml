@@ -16,6 +16,11 @@ services:
     environment:
       NAME: LOCAL
       NODE_ENV: development
+      MONGO_IP: 172.38.0.4
+      MONGO_PORT: 27017
+      MONGO_USER: 'admin'
+      MONGO_PASSWORD: 'root123'
+      MONGO_DB_NAME: 'schedule_main'
   api_agenda_database:
     image: mongo:latest
     container_name: api_agenda_database
@@ -27,6 +32,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: schedule_main
+    volumes:
+      - ./scripts/mongo-init-script.js:/docker-entrypoint-initdb.d/mongo-init.js
 networks:
   api_agenda_net:
     driver: bridge

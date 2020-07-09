@@ -1,7 +1,10 @@
-const routesMiddleware = require('./core/middlewares/routes-middleware');
+const routesMiddleware = require('./middlewares/routes-middleware');
+const mongoConnnection = require('./database/mongo-connnection');
 
 module.exports = {
-    run(app) {
+    async run(app) {
+        await mongoConnnection();
+
         app.use(routesMiddleware());
 
         app.listen(

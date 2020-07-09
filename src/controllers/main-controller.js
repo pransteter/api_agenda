@@ -1,5 +1,5 @@
 module.exports = {
     healthCheck(req, res) {
-        return res.send('It\'s working! \n');
+        return res.status(200).send('It\'s working! \n');
     }
 }
