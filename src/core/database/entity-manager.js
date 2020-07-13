@@ -10,7 +10,7 @@ class EntityManager {
         try {
             this.entity = mongoose.model(name);
         } catch (err) {
-            this.entity = mongoose.model(name, require(`../../entities/${name}`));
+            this.entity = mongoose.model(name, require(`../../entities/${name}`)(mongoose));
         }
     }
 

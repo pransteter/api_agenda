@@ -5,7 +5,8 @@
   "main": "./index.js",
   "scripts": {
     "start": "node ./index.js",
-    "test": "jest --runInBand --colors"
+    "test": "npm run clear-test-cache && jest --runInBand --colors",
+    "clear-test-cache": "jest --clearCache"
   },
   "repository": {
     "type": "git",

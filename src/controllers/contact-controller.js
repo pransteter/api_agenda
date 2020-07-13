@@ -36,7 +36,7 @@ module.exports = {
             return res.status(404).send(result.errorMsg);
         }
 
-        return res.status(200).send(result.contact).end();
+        return res.status(200).send(result.contact);
     },
 
     async updateOne(req, res) {

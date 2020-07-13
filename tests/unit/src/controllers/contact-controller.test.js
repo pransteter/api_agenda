@@ -7,24 +7,27 @@ describe('Contact controller:', () => {
     let reqMock;
     let resMock;
     let contactMock;
+    let responseMock;
 
     beforeEach(() => {
-        reqMock = { params: {}, body: {} };
+        reqMock = { params: {}, body: {}, query: {} };
         resMock = {
             send: jest.fn(),
             status: jest.fn((code) => (resMock))
         };
         contactMock = { name: 'Mock Guy' };
-        contactService.getOne = jest.fn((id) => (contactMock));
-        contactService.createOne = jest.fn((contact) => (true));
-        contactService.updateOne = jest.fn((id, contact) => (true));
-        contactService.removeOne = jest.fn((id) => (true));
-        contactService.getAll = jest.fn(() => ([contactMock]));
+        responseMock = { done: true, errorMsg: '' };
+        contactService.getOne = jest.fn((id) => (responseMock));
+        contactService.createOne = jest.fn((contact) => (responseMock));
+        contactService.updateOne = jest.fn((id, contact) => (responseMock));
+        contactService.removeOne = jest.fn((id) => (responseMock));
+        contactService.getAll = jest.fn((query) => (responseMock));
     });
 
-    it('Should be success - controller.getOne().', () => {
+    it('Should be success - controller.getOne().', async() => {
         reqMock.params.id = '123';
-        contactController.getOne(reqMock, resMock);
+        responseMock.contact = contactMock;
+        await contactController.getOne(reqMock, resMock);
         expect(contactService.getOne).toHaveBeenCalledTimes(1);
         expect(contactService.getOne).toHaveBeenCalledWith(reqMock.params.id);
         expect(resMock.status).toHaveBeenCalledTimes(1);
@@ -33,111 +36,146 @@ describe('Contact controller:', () => {
         expect(resMock.send).toHaveBeenCalledWith(contactMock);
     });
 
-    it('Should be failed - controller.getOne().', () => {
-        delete reqMock.params.id;
-        contactService.getOne = jest.fn((id) => {
-            throw Error(`There is no contact with Id ${id}`);
-        });
-        contactController.getOne(reqMock, resMock);
+    it('Should be failed (service fail) - controller.getOne().', async() => {
+        reqMock.params.id = '123';
+        responseMock.done = false;
+        responseMock.errorMsg = 'any message';
+        await contactController.getOne(reqMock, resMock);
         expect(contactService.getOne).toHaveBeenCalledTimes(1);
-        expect(contactService.getOne).toHaveBeenCalledWith(null);
+        expect(contactService.getOne).toHaveBeenCalledWith(reqMock.params.id);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(404);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith(`There is no contact with Id ${null}`);
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.errorMsg);
     });
 
-    it('Should be success - controller.createOne().', () => {
+    it('Should be failed (bad request) - controller.getOne().', async() => {
+        delete reqMock.params.id;
+        await contactController.getOne(reqMock, resMock);
+        expect(contactService.getOne).toHaveBeenCalledTimes(0);
+        expect(resMock.status).toHaveBeenCalledTimes(1);
+        expect(resMock.status).toHaveBeenCalledWith(400);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith('You need to send a ID as a url parameter.');
+    });
+
+    it('Should be success - controller.createOne().', async() => {
         reqMock.body = contactMock;
-        contactController.createOne(reqMock, resMock);
+        await contactController.createOne(reqMock, resMock);
         expect(contactService.createOne).toHaveBeenCalledTimes(1);
         expect(contactService.createOne).toHaveBeenCalledWith(reqMock.body);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(204);
-        expect(resMock.send).toHaveBeenCalledTimes(0);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith();
     });
 
-    it('Should be failed - controller.createOne().', () => {
-        reqMock.body = '123wrong';
-        contactService.createOne = jest.fn((id) => {
-            throw Error('Parameter needs to be an object.');
-        });
-        contactController.createOne(reqMock, resMock);
+    it('Should be failed - controller.createOne().', async() => {
+        delete reqMock.body;
+        responseMock.done = false;
+        responseMock.errorMsg = 'any message';
+        await contactController.createOne(reqMock, resMock);
         expect(contactService.createOne).toHaveBeenCalledTimes(1);
-        expect(contactService.createOne).toHaveBeenCalledWith(reqMock.body);
+        expect(contactService.createOne).toHaveBeenCalledWith(null);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(400);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith('Parameter needs to be an object.');
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.errorMsg);
     });
 
-    it('Should be success - controller.updateOne().', () => {
+    it('Should be success - controller.updateOne().', async() => {
         reqMock.params.id = '123';
         reqMock.body = contactMock;
-        contactController.updateOne(reqMock, resMock);
+        await contactController.updateOne(reqMock, resMock);
         expect(contactService.updateOne).toHaveBeenCalledTimes(1);
         expect(contactService.updateOne).toHaveBeenCalledWith(reqMock.params.id, reqMock.body);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(204);
-        expect(resMock.send).toHaveBeenCalledTimes(0);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith();
     });
 
-    it('Should be failed - controller.updateOne().', () => {
+    it('Should be failed (service fail) - controller.updateOne().', async() => {
         reqMock.params.id = '123';
-        reqMock.body = '123wrong';
-        contactService.updateOne = jest.fn((id, contact) => {
-            throw Error('Parameter needs to be an object.');
-        });
-        contactController.updateOne(reqMock, resMock);
+        delete reqMock.body;
+        responseMock.done = false;
+        responseMock.errorMsg = 'Any error';
+        await contactController.updateOne(reqMock, resMock);
         expect(contactService.updateOne).toHaveBeenCalledTimes(1);
-        expect(contactService.updateOne).toHaveBeenCalledWith(reqMock.params.id, reqMock.body);
+        expect(contactService.updateOne).toHaveBeenCalledWith(reqMock.params.id, null);
+        expect(resMock.status).toHaveBeenCalledTimes(1);
+        expect(resMock.status).toHaveBeenCalledWith(404);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.errorMsg);
+    });
+
+    it('Should be failed (bad request) - controller.updateOne().', async() => {
+        delete reqMock.params.id;
+        reqMock.body = contactMock;
+        await contactController.updateOne(reqMock, resMock);
+        expect(contactService.updateOne).toHaveBeenCalledTimes(0);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(400);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith('Parameter needs to be an object.');
+        expect(resMock.send).toHaveBeenCalledWith('You need to send a ID as a url parameter.');
     });
 
-    it('Should be success - controller.removeOne().', () => {
+    it('Should be success - controller.removeOne().', async() => {
         reqMock.params.id = '123';
-        contactController.removeOne(reqMock, resMock);
+        await contactController.removeOne(reqMock, resMock);
         expect(contactService.removeOne).toHaveBeenCalledTimes(1);
         expect(contactService.removeOne).toHaveBeenCalledWith(reqMock.params.id);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(204);
-        expect(resMock.send).toHaveBeenCalledTimes(0);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith();
     });
 
-    it('Should be failed - controller.removeOne().', () => {
+    it('Should be failed (service fail) - controller.removeOne().', async() => {
         reqMock.params.id = '123';
-        contactService.removeOne = jest.fn((id) => {
-            throw Error(`There is no contact with Id ${id}`);
-        });
-        contactController.removeOne(reqMock, resMock);
+        responseMock.done = false;
+        responseMock.errorMsg = 'Any error';
+        await contactController.removeOne(reqMock, resMock);
         expect(contactService.removeOne).toHaveBeenCalledTimes(1);
         expect(contactService.removeOne).toHaveBeenCalledWith(reqMock.params.id);
+        expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(404);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith('There is no contact with Id 123');
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.errorMsg);
     });
 
-    it('Should be success - controller.getAll().', () => {
-        contactController.getAll(reqMock, resMock);
-        expect(contactService.getAll).toHaveBeenCalledTimes(1);
-        expect(contactService.getAll).toHaveBeenCalledWith();
+    it('Should be failed (bad request) - controller.removeOne().', async() => {
+        delete reqMock.params.id;
+        await contactController.removeOne(reqMock, resMock);
+        expect(contactService.removeOne).toHaveBeenCalledTimes(0);
+        expect(resMock.status).toHaveBeenCalledTimes(1);
+        expect(resMock.status).toHaveBeenCalledWith(400);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith([contactMock]);
+        expect(resMock.send).toHaveBeenCalledWith('You need to send a ID as a url parameter.');
     });
 
-    it('Should be failed - controller.getAll().', () => {
-        contactService.getAll = jest.fn(() => {
-            throw Error('No database connection.');
-        });
-        contactController.getAll(reqMock, resMock);
+    it('Should be success - controller.getAll().', async() => {
+        reqMock.query = { name: 'mock name' };
+        responseMock.contacts = [ contactMock ];
+        await contactController.getAll(reqMock, resMock);
         expect(contactService.getAll).toHaveBeenCalledTimes(1);
-        expect(contactService.getAll).toHaveBeenCalledWith();
+        expect(contactService.getAll).toHaveBeenCalledWith(reqMock.query);
+        expect(resMock.status).toHaveBeenCalledTimes(1);
+        expect(resMock.status).toHaveBeenCalledWith(200);
+        expect(resMock.send).toHaveBeenCalledTimes(1);
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.contacts);
+    });
+
+    it('Should be failed (service fail) - controller.getAll().', async() => {
+        reqMock.query = { name: 'mock name' };
+        responseMock.done = false;
+        responseMock.errorMsg = 'Any error';
+        await contactController.getAll(reqMock, resMock);
+        expect(contactService.getAll).toHaveBeenCalledTimes(1);
+        expect(contactService.getAll).toHaveBeenCalledWith(reqMock.query);
         expect(resMock.status).toHaveBeenCalledTimes(1);
         expect(resMock.status).toHaveBeenCalledWith(500);
         expect(resMock.send).toHaveBeenCalledTimes(1);
-        expect(resMock.send).toHaveBeenCalledWith('No database connection.');
+        expect(resMock.send).toHaveBeenCalledWith(responseMock.errorMsg);
     });
 });
