@@ -1,12 +1,12 @@
-# API Agenda
+## API Agenda
 
 ### Como inicio o projeto?
 
-# Rode o seguinte comando:
+> Rode o seguinte comando:
 
 `make build && make up`
 
-> obs.: Você vai precisar de docker + docker-compose instalados.
+"obs.: Você vai precisar de docker + docker-compose instalados.
 
 # Aguarde. Quando visualizar a mensagem abaixo, o serviço estará disponível:
 
