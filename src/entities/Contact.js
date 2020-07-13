@@ -1,4 +1,6 @@
-module.exports = {
+const mongoose = require('mongoose');
+
+const schema = new mongoose.Schema({
     name: String,
     email: String,
     phones: [String],
@@ -10,5 +12,7 @@ module.exports = {
         state: String,
         country: String
     },
-    enabled: Boolean
-}
+    enabled: { type: Boolean, default: true }
+});
+
+module.exports = schema;

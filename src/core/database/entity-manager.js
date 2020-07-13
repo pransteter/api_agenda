@@ -2,14 +2,20 @@ const mongoose = require('mongoose');
 
 class EntityManager {
     constructor() {
-        this.schema = schema;
+        this.schema = '';
         this.entity = null;
     }
 
     async loadEntity(name) {
-        this.entity = mongoose.model(name, new mongoose.Schema(
-            require(`../../entities/${name}`)
-        ));
+        try {
+            this.entity = mongoose.model(name);
+        } catch (err) {
+            this.entity = mongoose.model(name, require(`../../entities/${name}`));
+        }
+    }
+
+    async create(data) {
+        return this.entity.create(data);
     }
 
     async getById(id) {
@@ -22,7 +28,7 @@ class EntityManager {
     }
 
     async updateById(id, newEntityValues) {
-        return this.entity.findByIdAndUpdate(id, newEntityValues);
+        return this.entity.findByIdAndUpdate(id, { ...newEntityValues, _id: id });
     }
 
     async removeById(id) {

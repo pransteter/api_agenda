@@ -2,77 +2,73 @@ const contactService = require("../services/contact-service");
 
 module.exports = {
     async getAll(req, res) {
-        let response, code;
+        const result = await contactService.getAll(req.query);
 
-        try {
-            response = await contactService.getAll();
-            code = 200;
-        } catch (err) {
-            response = err.message;
-            code = 404;
+        if (result.done === false) {
+            return res.status(500).send(result.errorMsg);
         }
 
-        return res.status(code).send(response);
+        return res.status(200).send(result.contacts);
     },
-    async createOne(req, res) {
-        let response, code;
 
+    async createOne(req, res) {
         const newContact = req.body || null;
 
-        try {
-            response = await contactService.createOne(newContact);
-            code = 204;
-        } catch (err) {
-            response = err.message;
-            code = 404;
+        const result = await contactService.createOne(newContact);
+
+        if (result.done === false) {
+            return res.status(400).send(result.errorMsg);
         }
 
-        return res.status(code).send(response);
+        return res.status(204).send();
     },
-    async getOne(req, res) {
-        let response, code;
 
+    async getOne(req, res) {
         const contactId = req.params.id || null;
 
-        try {
-            response = await contactService.getOne(contactId);
-            code = 200;
-        } catch (err) {
-            response = err.message;
-            code = 404;
+        if (contactId === null) {
+            return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        return res.status(code).send(response);
-    },
-    async updateOne(req, res) {
-        let response, code;
+        const result = await contactService.getOne(contactId);
 
+        if (result.done === false) {
+            return res.status(404).send(result.errorMsg);
+        }
+
+        return res.status(200).send(result.contact);
+    },
+
+    async updateOne(req, res) {
         const contactId = req.params.id || null;
         const newContactData = req.body || null;
 
-        try {
-            response = await contactService.updateOne(contactId, newContactData);
-            code = 204;
-        } catch (err) {
-            response = err.message;
-            code = 400;
+        if (contactId === null) {
+            return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        return res.status(code).send(response);
-    },
-    async removeOne(req, res) {
-        let response, code;
+        const result = await contactService.updateOne(contactId, newContactData);
 
+        if (result.done === false) {
+            return res.status(404).send(result.errorMsg);
+        }
+
+        return res.status(204).send();
+    },
+
+    async removeOne(req, res) {
         const contactId = req.params.id || null;
 
-        try {
-            response = await contactService.removeOne(contactId);
-            code = 200;
-        } catch (err) {
-            response = err.message;
-            code = 404;
+        if (contactId === null) {
+            return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        return res.status(code).send(response);
+        const result = await contactService.removeOne(contactId);
+
+        if (result.done === false) {
+            return res.status(404).send(result.errorMsg);
+        }
+
+        return res.status(204).send();
     }
 }

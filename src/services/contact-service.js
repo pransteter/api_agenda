@@ -1,26 +1,120 @@
 const EntityManager = require("../core/database/entity-manager");
+const buildContactFilterQuery = require("./helpers/build-contact-filter-query");
+const WeatherApiClient = require("./weather-api-client");
+
+const modelName = 'Contact';
 
 module.exports = {
-    async getAll() {
+    async getAll(rawQuery) {
         const em = new EntityManager();
-        console.log(em);
-        // fetch all
-        return [{ name: 'Romulo Mockman' }];
+        await em.loadEntity(modelName);
+
+        const response = {
+            done: true,
+            contacts: [],
+            errorMsg: ''
+        };
+
+        return await em.find(buildContactFilterQuery(rawQuery))
+            .then(results => {
+                response.contacts = results;
+                return response;
+            })
+            .catch(err => {
+                response.done = false;
+                response.errorMsg = err.message;
+                return response;
+            });
     },
     async createOne(data) {
-        // save
-        return true;
+        const em = new EntityManager();
+        await em.loadEntity(modelName);
+
+        const response = {
+            done: false,
+            errorMsg: ''
+        };
+
+        return await em.create(data)
+            .then(() => {
+                response.done = true;
+                return response;
+            })
+            .catch(err => {
+                response.errorMsg = err.message;
+                return response;
+            });
     },
+
     async getOne(id) {
-        // get by id
-        return { name: 'Romulo Mockman' };
+        const em = new EntityManager();
+        await em.loadEntity(modelName);
+
+        const response = {
+            done: false,
+            contact: null,
+            errorMsg: ''
+        };
+
+        return await em.getById(id)
+            .then(result => result.toObject())
+            .then(async contact => {
+                response.contact = contact;
+                response.done = true;
+
+                if (!contact.address || !contact.address.city) {
+                    return response;
+                }
+
+                const apiClient = new WeatherApiClient();
+                response.contact.address.weatherData = await apiClient
+                    .getWeatherDataByCity(contact.address.city);
+
+                return response;
+            })
+            .catch(err => {
+                response.errorMsg = err.message;
+                return response;
+            });
     },
+
     async updateOne(id, data) {
-        // update
-        return true;
+        const em = new EntityManager();
+        await em.loadEntity(modelName);
+
+        const response = {
+            done: false,
+            errorMsg: ''
+        };
+
+        return await em.updateById(id, data)
+            .then(() => {
+                response.done = true;
+                return response;
+            })
+            .catch(err => {
+                response.errorMsg = err.message;
+                return response;
+            });
     },
+
     async removeOne(id) {
-        // remove
-        return true;
+        const em = new EntityManager();
+        await em.loadEntity(modelName);
+
+        const response = {
+            done: false,
+            errorMsg: ''
+        };
+
+        return await em.removeById(id)
+            .then(() => {
+                response.done = true;
+                return response;
+            })
+            .catch(err => {
+                response.errorMsg = err.message;
+                return response;
+            });
     }
 };
