@@ -37,7 +37,7 @@ services:
       MONGO_INITDB_DATABASE: schedule_main
     volumes:
       - ./scripts/mongo-init-script.js:/docker-entrypoint-initdb.d/mongo-init.js
-    command: mongod --smallfiles
+    command: mongod --smallfiles --quiet
 networks:
   api_agenda_net:
     driver: bridge

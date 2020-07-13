@@ -57,7 +57,7 @@ module.exports = {
         };
 
         return await em.getById(id)
-            .then(result => result.toObject())
+            .then(result => (result ? result.toObject : {}))
             .then(async contact => {
                 response.contact = contact;
                 response.done = true;
