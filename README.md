@@ -23,3 +23,9 @@ Verifique se a API está disponível através do seguinte comando:
 Rode o comando abaixo:
 
 `make tests`
+
+### Documentação da API:
+
+A documentação pode ser acessada através deste url:
+
+> [Postman Collection!](https://documenter.getpostman.com/view/1363847/T17Na4jC?version=latest)

@@ -15,7 +15,7 @@ module.exports = {
             errorMsg: ''
         };
 
-        return await em.find(buildContactFilterQuery(rawQuery))
+        return em.find(buildContactFilterQuery(rawQuery))
             .then(results => {
                 response.contacts = results;
                 return response;
@@ -35,7 +35,7 @@ module.exports = {
             errorMsg: ''
         };
 
-        return await em.create(data)
+        return em.create(data)
             .then(() => {
                 response.done = true;
                 return response;
@@ -56,8 +56,10 @@ module.exports = {
             errorMsg: ''
         };
 
-        return await em.getById(id)
-            .then(result => (result ? result.toObject : {}))
+        return em.getById(id)
+            .then(result => {
+                return JSON.parse(JSON.stringify(result));
+            })
             .then(async contact => {
                 response.contact = contact;
                 response.done = true;
@@ -87,7 +89,7 @@ module.exports = {
             errorMsg: ''
         };
 
-        return await em.updateById(id, data)
+        return em.updateById(id, data)
             .then(() => {
                 response.done = true;
                 return response;
@@ -107,7 +109,7 @@ module.exports = {
             errorMsg: ''
         };
 
-        return await em.removeById(id)
+        return em.removeById(id)
             .then(() => {
                 response.done = true;
                 return response;
