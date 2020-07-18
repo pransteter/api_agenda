@@ -1,15 +1,16 @@
-.PHONY: build
-build:
+.PHONY: help build up test down
+
+help:
+	@grep -E '^[a-zA-Z-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "[32m%-15s[0m %s\n", $$1, $$2}'
+
+build: ## Build docker environment
 	docker-compose build
 
-.PHONY: up
-up:
+up: ## Run docker environment (Second step)
 	docker-compose up
 
-.PHONY: test
-test:
+test: ## Run all tests
 	docker exec api_agenda_app npm run test
 
-.PHONY: down
-down:
+down: ## Turn off the docker environment
 	docker-compose down

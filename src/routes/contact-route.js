@@ -1,6 +1,6 @@
-const contactController = require('../controllers/contact-controller');
+import { contactController } from '../controllers/contact-controller';
 
-module.exports = (router) => {
+export default (router) => {
     router.get('/contacts', contactController.getAll);
     router.post('/contacts', contactController.createOne);
     router.get('/contacts/:id', contactController.getOne);

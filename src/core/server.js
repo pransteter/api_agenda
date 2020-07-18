@@ -1,8 +1,8 @@
-const routesMiddleware = require('./middlewares/routes-middleware');
-const mongoConnnection = require('./database/mongo-connnection');
-const Express = require('express');
+import routesMiddleware from './middlewares/routes-middleware';
+import mongoConnnection from './database/mongo-connnection';
+import Express from 'express';
 
-module.exports = {
+export const server = {
     async run(app) {
         await mongoConnnection();
 

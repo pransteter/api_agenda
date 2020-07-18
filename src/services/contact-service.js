@@ -1,13 +1,14 @@
-const EntityManager = require("../core/database/entity-manager");
-const buildContactFilterQuery = require("./helpers/build-contact-filter-query");
-const WeatherApiClient = require("./weather-api-client");
+import { EntityManager } from '../core/database/entity-manager';
+import buildContactFilterQuery from './helpers/build-contact-filter-query';
+import { WeatherApiClient } from './weather-api-client';
+import contact from '../entities/contact';
 
 const modelName = 'Contact';
 
-module.exports = {
+export const contactService = {
     async getAll(rawQuery) {
         const em = new EntityManager();
-        await em.loadEntity(modelName);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: true,

@@ -4,7 +4,8 @@
   "description": "Api criada para teste/avaliação",
   "main": "./index.js",
   "scripts": {
-    "start": "node ./index.js",
+    "build": "rm -rf build/* && babel -d ./build ./src",
+    "start": "NODE_ENV=production node ./build/index.js",
     "test": "npm run clear-test-cache && jest --runInBand --colors",
     "clear-test-cache": "jest --clearCache"
   },
@@ -25,6 +26,12 @@
     "ramda": "^0.27.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.10.5",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "jest": "^26.1.0"
   },
   "jest": {

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 mongoose.set('useUnifiedTopology', true);
 
 const url = `mongodb://${
@@ -13,7 +13,7 @@ const url = `mongodb://${
     process.env.MONGO_DB_NAME || ''
 }`;
 
-module.exports = async() => {
+export default async() => {
     await mongoose.connect(
         url,
         { useNewUrlParser: true, useFindAndModify: false }

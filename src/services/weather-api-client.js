@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 const badConditionsSlugs = [
     'storm', 'snow', 'hail', 'rain', 'fog', 'cloud', 'cloudly_day', 'cloudly_night'
@@ -17,7 +17,7 @@ const suggestions = {
     normalRainy: 'Gostaria de assistir um filme?'
 };
 
-class WeatherApiClient {
+export class WeatherApiClient {
     constructor() {
         this.apiUri = `${process.env.WEATHER_API_URI}/?key=${process.env.WEATHER_API_KEY}`;
     }
@@ -77,5 +77,3 @@ class WeatherApiClient {
             .catch(() => (weatherData));
     }
 }
-
-module.exports = WeatherApiClient;

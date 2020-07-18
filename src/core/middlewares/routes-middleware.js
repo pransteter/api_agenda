@@ -1,9 +1,9 @@
-const getRouter = require('express').Router;
+import { Router as getRouter } from 'express';
 
-const contactRoute = require('../../routes/contact-route');
-const mainRoute = require('../../routes/main-route');
+import contactRoute from '../../routes/contact-route';
+import mainRoute from '../../routes/main-route';
 
-module.exports = () => {
+export default () => {
     const router = getRouter();
 
     mainRoute(router);

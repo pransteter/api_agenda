@@ -1,4 +1,4 @@
-module.exports = (mongoose) => {
+export default (mongoose) => {
     const schema = new mongoose.Schema({
         name: String,
         email: String,

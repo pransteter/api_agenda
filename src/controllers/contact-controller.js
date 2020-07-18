@@ -1,6 +1,6 @@
-const contactService = require("../services/contact-service");
+import { contactService } from '../services/contact-service';
 
-module.exports = {
+export const contactController = {
     async getAll(req, res) {
         const result = await contactService.getAll(req.query);
 

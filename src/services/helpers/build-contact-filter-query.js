@@ -1,4 +1,4 @@
-const R = require('ramda');
+import R from 'ramda';
 
 const contactQueryParams = [
     'name',
@@ -32,31 +32,31 @@ const transformAddressQuery = query => {
     const rawAddressQuery = R.pick(addressQueryParams, query);
     const addressQuery = {};
 
-    $prefix = 'address';
+    const prefix = 'address';
 
     if (rawAddressQuery.address_street) {
-        addressQuery[`${$prefix}.street`] = rawAddressQuery.address_street;
+        addressQuery[`${prefix}.street`] = rawAddressQuery.address_street;
     }
     if (rawAddressQuery.address_localNumber) {
-        addressQuery[`${$prefix}.localNumber`] = rawAddressQuery.address_localNumber;
+        addressQuery[`${prefix}.localNumber`] = rawAddressQuery.address_localNumber;
     }
     if (rawAddressQuery.address_postalCode) {
-        addressQuery[`${$prefix}.postalCode`] = rawAddressQuery.address_postalCode;
+        addressQuery[`${prefix}.postalCode`] = rawAddressQuery.address_postalCode;
     }
     if (rawAddressQuery.address_city) {
-        addressQuery[`${$prefix}.city`] = rawAddressQuery.address_city;
+        addressQuery[`${prefix}.city`] = rawAddressQuery.address_city;
     }
     if (rawAddressQuery.address_state) {
-        addressQuery[`${$prefix}.state`] = rawAddressQuery.address_state;
+        addressQuery[`${prefix}.state`] = rawAddressQuery.address_state;
     }
     if (rawAddressQuery.address_country) {
-        addressQuery[`${$prefix}.country`] = rawAddressQuery.address_country;
+        addressQuery[`${prefix}.country`] = rawAddressQuery.address_country;
     }
 
     return addressQuery;
 }
 
-module.exports = rawQuery => {
+export default rawQuery => {
     const contactQuery = transformContactQuery(rawQuery);
     const addressQuery = transformAddressQuery(rawQuery);
 

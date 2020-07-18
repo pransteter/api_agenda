@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-class EntityManager {
+export class EntityManager {
     constructor() {
         this.schema = '';
         this.entity = null;
     }
 
-    async loadEntity(name) {
+    async loadEntity(name, schema) {
         try {
             this.entity = mongoose.model(name);
         } catch (err) {
-            this.entity = mongoose.model(name, require(`../../entities/${name}`)(mongoose));
+            this.entity = mongoose.model(name, schema(mongoose));
         }
     }
 
@@ -35,5 +35,3 @@ class EntityManager {
         return this.updateById(id, { enabled: false });
     }
 }
-
-module.exports = EntityManager;
