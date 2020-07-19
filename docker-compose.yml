@@ -10,6 +10,7 @@ services:
       - ./:/app
     ports:
       - "4001:4001"
+      - "9229:9229"
     networks:
       api_agenda_net:
         ipv4_address: 172.38.0.2
