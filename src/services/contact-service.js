@@ -1,14 +1,14 @@
 import { EntityManager } from '../core/database/entity-manager';
 import buildContactFilterQuery from './helpers/build-contact-filter-query';
 import { WeatherApiClient } from './weather-api-client';
-import * as contactSchema from '../entities/contact.js';
+import contact from '../entities/contact';
 
 const modelName = 'Contact';
 
 export const contactService = {
     async getAll(rawQuery) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contactSchema);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: true,
@@ -29,7 +29,7 @@ export const contactService = {
     },
     async createOne(data) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contactSchema);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: false,
@@ -49,7 +49,7 @@ export const contactService = {
 
     async getOne(id) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contactSchema);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: false,
@@ -61,17 +61,17 @@ export const contactService = {
             .then(result => {
                 return JSON.parse(JSON.stringify(result));
             })
-            .then(async contact => {
-                response.contact = contact;
+            .then(async contactFromDB => {
+                response.contact = contactFromDB;
                 response.done = true;
 
-                if (!contact.address || !contact.address.city) {
+                if (!contactFromDB.address || !contactFromDB.address.city) {
                     return response;
                 }
 
                 const apiClient = new WeatherApiClient();
                 response.contact.address.weatherData = await apiClient
-                    .getWeatherDataByCity(contact.address.city);
+                    .getWeatherDataByCity(contactFromDB.address.city);
 
                 return response;
             })
@@ -83,7 +83,7 @@ export const contactService = {
 
     async updateOne(id, data) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contactSchema);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: false,
@@ -103,7 +103,7 @@ export const contactService = {
 
     async removeOne(id) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contactSchema);
+        await em.loadEntity(modelName, contact);
 
         const response = {
             done: false,
