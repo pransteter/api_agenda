@@ -1,14 +1,14 @@
 import { EntityManager } from '../core/database/entity-manager';
 import buildContactFilterQuery from './helpers/build-contact-filter-query';
 import { WeatherApiClient } from './weather-api-client';
-import contact from '../entities/contact';
+import * as contactSchema from '../entities/contact.js';
 
 const modelName = 'Contact';
 
 export const contactService = {
     async getAll(rawQuery) {
         const em = new EntityManager();
-        await em.loadEntity(modelName, contact);
+        await em.loadEntity(modelName, contactSchema);
 
         const response = {
             done: true,
@@ -29,7 +29,7 @@ export const contactService = {
     },
     async createOne(data) {
         const em = new EntityManager();
-        await em.loadEntity(modelName);
+        await em.loadEntity(modelName, contactSchema);
 
         const response = {
             done: false,
@@ -49,7 +49,7 @@ export const contactService = {
 
     async getOne(id) {
         const em = new EntityManager();
-        await em.loadEntity(modelName);
+        await em.loadEntity(modelName, contactSchema);
 
         const response = {
             done: false,
@@ -83,7 +83,7 @@ export const contactService = {
 
     async updateOne(id, data) {
         const em = new EntityManager();
-        await em.loadEntity(modelName);
+        await em.loadEntity(modelName, contactSchema);
 
         const response = {
             done: false,
@@ -103,7 +103,7 @@ export const contactService = {
 
     async removeOne(id) {
         const em = new EntityManager();
-        await em.loadEntity(modelName);
+        await em.loadEntity(modelName, contactSchema);
 
         const response = {
             done: false,

@@ -6,11 +6,11 @@ export class EntityManager {
         this.entity = null;
     }
 
-    async loadEntity(name, schema) {
+    async loadEntity(name, schemaFunc) {
         try {
             this.entity = mongoose.model(name);
         } catch (err) {
-            this.entity = mongoose.model(name, schema(mongoose));
+            this.entity = mongoose.model(name, schemaFunc(mongoose));
         }
     }
 
