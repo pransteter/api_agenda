@@ -32,6 +32,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
+    "@sucrase/jest-plugin": "^2.0.0",
     "jest": "^26.1.0",
     "nodemon": "^2.0.4",
     "sucrase": "^3.15.0"
@@ -44,6 +45,9 @@
     "collectCoverageFrom": [
       "src/**/*.js",
       "!**/src/core/**"
-    ]
+    ],
+    "transform": {
+      ".(js)": "@sucrase/jest-plugin"
+    }
   }
 }

@@ -1,5 +1,5 @@
-const mainRoute = require("../../../../src/routes/main-route");
-const mainController = require("../../../../src/controllers/main-controller");
+import mainRoute from '../../../../src/routes/main-route';
+import { mainController } from '../../../../src/controllers/main-controller';
 
 jest.mock('../../../../src/controllers/main-controller');
 

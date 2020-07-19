@@ -1,4 +1,4 @@
-const mainController = require("../../../../src/controllers/main-controller");
+import { mainController } from '../../../../src/controllers/main-controller';
 
 describe('Main controller:', () => {
     let reqMock;

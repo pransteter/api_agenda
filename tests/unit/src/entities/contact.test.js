@@ -1,3 +1,5 @@
+import contactEntity from '../../../../src/entities/contact';
+
 describe('Contact entity:', () => {
     let mongooseMock;
 
@@ -8,7 +10,7 @@ describe('Contact entity:', () => {
     });
 
     it('Should be success - create schema calling mongoose method.', () => {
-        const schema = require('../../../../src/entities/contact')(mongooseMock);
+        const schema = contactEntity(mongooseMock);
         expect(mongooseMock.Schema).toHaveBeenCalledTimes(1);
         expect(mongooseMock.Schema).toHaveBeenCalledWith({
             name: String,

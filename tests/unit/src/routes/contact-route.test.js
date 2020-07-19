@@ -1,5 +1,5 @@
-const contactRoute = require("../../../../src/routes/contact-route");
-const contactController = require("../../../../src/controllers/contact-controller");
+import contactRoute from '../../../../src/routes/contact-route';
+import { contactController } from '../../../../src/controllers/contact-controller';
 
 jest.mock('../../../../src/controllers/contact-controller');
 
