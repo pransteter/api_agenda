@@ -1,8 +1,12 @@
-import { contactService } from '../services/contact-service';
+import { ContactService } from '../services/contact-service';
+import { ContactRepository } from '../repositories/contact-repository';
+import { RepositoryResponse } from '../repositories/structures/repository-response';
+import { EntityManager } from '../core/database/entity-manager';
 
 export const contactController = {
     async getAll(req, res) {
-        const result = await contactService.getAll(req.query);
+        const service = new ContactService(new ContactRepository(new EntityManager));
+        const result = await service.getAll(req.query);
 
         if (result.done === false) {
             return res.status(500).send(result.errorMsg);
