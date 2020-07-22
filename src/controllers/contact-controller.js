@@ -1,32 +1,64 @@
 import { ContactService } from '../services/contact-service';
 import { ContactRepository } from '../repositories/contact-repository';
-import { RepositoryResponse } from '../repositories/structures/repository-response';
-import { EntityManager } from '../core/database/entity-manager';
+import { Request, Response } from 'express';
 
-export const contactController = {
+class ContactController {
+    /**
+     * @property {ContactRepository}
+     */
+    repository;
+
+    /**
+     * @property {ContactService}
+     */
+    service;
+
+    /**
+     * Contructor method
+     */
+    constructor() {
+        this.repository = new ContactRepository;
+        this.service = new ContactService(this.repository);
+    }
+
+    /**
+     * Get all contacts
+     * @param {Request} req
+     * @param {Response} res
+     */
     async getAll(req, res) {
-        const service = new ContactService(new ContactRepository(new EntityManager));
-        const result = await service.getAll(req.query);
+        console.log(this);
+        const result = await this.service.getAll(req.query);
 
         if (result.done === false) {
             return res.status(500).send(result.errorMsg);
         }
 
         return res.status(200).send(result.contacts);
-    },
+    }
 
+    /**
+     * Create one contact
+     * @param {Request} req
+     * @param {Response} res
+     */
     async createOne(req, res) {
         const newContact = req.body || null;
 
-        const result = await contactService.createOne(newContact);
+        const result = await this.repository.createOne(newContact);
 
         if (result.done === false) {
             return res.status(400).send(result.errorMsg);
         }
 
-        return res.status(204).send();
-    },
+        return res.status(201).send();
+    }
 
+    /**
+     * Get one contact
+     * @param {Request} req
+     * @param {Response} res
+     */
     async getOne(req, res) {
         const contactId = req.params.id || null;
 
@@ -34,15 +66,20 @@ export const contactController = {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await contactService.getOne(contactId);
+        const result = await this.service.getOne(contactId);
 
         if (result.done === false) {
             return res.status(404).send(result.errorMsg);
         }
 
         return res.status(200).send(result.contact);
-    },
+    }
 
+    /**
+     * Update one contact
+     * @param {Request} req
+     * @param {Response} res
+     */
     async updateOne(req, res) {
         const contactId = req.params.id || null;
         const newContactData = req.body || null;
@@ -51,15 +88,20 @@ export const contactController = {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await contactService.updateOne(contactId, newContactData);
+        const result = await this.repository.updateOne(contactId, newContactData);
 
         if (result.done === false) {
             return res.status(404).send(result.errorMsg);
         }
 
         return res.status(204).send();
-    },
+    }
 
+    /**
+     * Remove one contact
+     * @param {Request} req
+     * @param {Response} res
+     */
     async removeOne(req, res) {
         const contactId = req.params.id || null;
 
@@ -67,7 +109,7 @@ export const contactController = {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await contactService.removeOne(contactId);
+        const result = await this.service.removeOne(contactId);
 
         if (result.done === false) {
             return res.status(404).send(result.errorMsg);
@@ -76,3 +118,5 @@ export const contactController = {
         return res.status(204).send();
     }
 }
+
+export default ContactController;

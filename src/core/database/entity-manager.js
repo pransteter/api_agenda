@@ -32,6 +32,6 @@ export class EntityManager {
     }
 
     async removeById(id) {
-        return this.updateById(id, { enabled: false }); // remove soft delete
+        return this.entity.remove({ _id: id });
     }
 }
