@@ -23,7 +23,7 @@ export class EntityManager {
     }
 
     async find(query) {
-        const filterValues = { ...query, enabled: true };
+        const filterValues = { ...query, enabled: true }; // remove filter by enabled
         return this.entity.find(filterValues);
     }
 
@@ -32,6 +32,6 @@ export class EntityManager {
     }
 
     async removeById(id) {
-        return this.updateById(id, { enabled: false });
+        return this.entity.remove({ _id: id });
     }
 }
