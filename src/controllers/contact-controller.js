@@ -2,7 +2,7 @@ import { ContactService } from '../services/contact-service';
 import { ContactRepository } from '../repositories/contact-repository';
 import { Request, Response } from 'express';
 
-class ContactController {
+export class ContactController {
     /**
      * @property {ContactRepository}
      */
@@ -27,14 +27,13 @@ class ContactController {
      * @param {Response} res
      */
     async getAll(req, res) {
-        console.log(this);
-        const result = await this.service.getAll(req.query);
+        const serviceResponse = await this.service.getAll(req.query);
 
-        if (result.done === false) {
-            return res.status(500).send(result.errorMsg);
+        if (serviceResponse.done === false) {
+            return res.status(500).send(serviceResponse.errorMsg);
         }
 
-        return res.status(200).send(result.contacts);
+        return res.status(200).send(serviceResponse.result);
     }
 
     /**
@@ -45,10 +44,10 @@ class ContactController {
     async createOne(req, res) {
         const newContact = req.body || null;
 
-        const result = await this.repository.createOne(newContact);
+        const serviceResponse = await this.repository.createOne(newContact);
 
-        if (result.done === false) {
-            return res.status(400).send(result.errorMsg);
+        if (serviceResponse.done === false) {
+            return res.status(400).send(serviceResponse.errorMsg);
         }
 
         return res.status(201).send();
@@ -66,13 +65,13 @@ class ContactController {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await this.service.getOne(contactId);
+        const serviceResponse = await this.service.getOne(contactId);
 
-        if (result.done === false) {
-            return res.status(404).send(result.errorMsg);
+        if (serviceResponse.done === false) {
+            return res.status(404).send(serviceResponse.errorMsg);
         }
 
-        return res.status(200).send(result.contact);
+        return res.status(200).send(serviceResponse.result);
     }
 
     /**
@@ -88,10 +87,10 @@ class ContactController {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await this.repository.updateOne(contactId, newContactData);
+        const serviceResponse = await this.repository.updateOne(contactId, newContactData);
 
-        if (result.done === false) {
-            return res.status(404).send(result.errorMsg);
+        if (serviceResponse.done === false) {
+            return res.status(404).send(serviceResponse.errorMsg);
         }
 
         return res.status(204).send();
@@ -109,14 +108,12 @@ class ContactController {
             return res.status(400).send('You need to send a ID as a url parameter.');
         }
 
-        const result = await this.service.removeOne(contactId);
+        const serviceResponse = await this.service.removeOne(contactId);
 
-        if (result.done === false) {
-            return res.status(404).send(result.errorMsg);
+        if (serviceResponse.done === false) {
+            return res.status(404).send(serviceResponse.errorMsg);
         }
 
         return res.status(204).send();
     }
 }
-
-export default ContactController;

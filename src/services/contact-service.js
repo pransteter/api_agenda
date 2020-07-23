@@ -21,7 +21,6 @@ export class ContactService {
      * @param {*} rawQuery
      */
     async getAll(rawQuery) {
-
         const filterQuery = (typeof rawQuery === 'object')
             ? buildContactFilterQuery(rawQuery)
             : {};
@@ -34,7 +33,7 @@ export class ContactService {
      * @param {string} id
      */
     async getOne(id) {
-        const response = await this.repository.getById(id);
+        const response = await this.repository.getOne(id);
         const contact = response.done ? response.result : {};
 
         if (contact.address && contact.address.city) {
