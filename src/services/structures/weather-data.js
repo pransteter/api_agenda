@@ -13,4 +13,9 @@ export class WeatherData {
      * @property {String} suggestion
      */
     suggestion = null;
+
+    /**
+     * @property {String} errorMessage
+     */
+    errorMessage = '';
 }

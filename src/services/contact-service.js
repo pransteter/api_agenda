@@ -1,4 +1,4 @@
-import { WeatherApiClient } from './weather-api-client';
+import { WeatherService } from './weather-service';
 import { ContactRepository } from '../repositories/contact-repository';
 import buildContactFilterQuery from './helpers/build-contact-filter-query';
 
@@ -37,7 +37,7 @@ export class ContactService {
         const contact = response.done ? response.result : {};
 
         if (contact.address && contact.address.city) {
-            const apiClient = new WeatherApiClient;
+            const apiClient = new WeatherService;
             contact.address.weatherData = await apiClient.getWeatherDataByCity(
                 contact.address && contact.address.city
             );

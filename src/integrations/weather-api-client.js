@@ -6,10 +6,14 @@ export class WeatherApiClient {
         this.apiUri = `${process.env.WEATHER_API_URI}/?key=${process.env.WEATHER_API_KEY}`;
     }
 
+    /**
+     * Get weather data by city
+     * @param {String} cityName
+     */
     async getWeatherDataByCity(cityName) {
         const normalizedCity = cityName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 
-        return await axios.get(`${this.apiUri}&city_name=${normalizedCity}`)
+        return axios.get(`${this.apiUri}&city_name=${normalizedCity}`)
             .then(result => {
                 const apiResult = result.data.results || {};
 
