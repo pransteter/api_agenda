@@ -9,6 +9,7 @@ export class WeatherApiClient {
     /**
      * Get weather data by city
      * @param {String} cityName
+     * @returns {WeatherApiResponse}
      */
     async getWeatherDataByCity(cityName) {
         const normalizedCity = cityName.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
