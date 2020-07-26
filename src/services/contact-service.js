@@ -37,7 +37,7 @@ export class ContactService {
         const contact = response.done ? response.result : {};
 
         if (contact.address && contact.address.city) {
-            const apiClient = new WeatherApiClient();
+            const apiClient = new WeatherApiClient;
             contact.address.weatherData = await apiClient.getWeatherDataByCity(
                 contact.address && contact.address.city
             );

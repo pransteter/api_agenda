@@ -1,47 +1,49 @@
 import axios from 'axios';
-
-const badConditionsSlugs = [
-    'storm', 'snow', 'hail', 'rain', 'fog', 'cloud', 'cloudly_day', 'cloudly_night'
-];
-
-const tempReferences = {
-    cold: 18,
-    hot: 30
-};
-
-const suggestions = {
-    coldSun: 'Gostaria de tomar um chocolate quente?',
-    hotSun: 'Gostaria de ir à praia?',
-    hotRainy: 'Gostaria de tomar um sorvete?',
-    normalSun: 'Gostaria de fazer alguma atividade ao livre?',
-    normalRainy: 'Gostaria de assistir um filme?'
-};
+import { WeatherData } from './structures/weather-data';
+import { WeatherApiResponse } from '../integrations/structures/weather-api-response';
 
 export class WeatherApiClient {
     constructor() {
-        this.apiUri = `${process.env.WEATHER_API_URI}/?key=${process.env.WEATHER_API_KEY}`;
+        this.suggestions = {
+            coldSun: 'Gostaria de tomar um chocolate quente?',
+            hotSun: 'Gostaria de ir à praia?',
+            hotRainy: 'Gostaria de tomar um sorvete?',
+            normalSun: 'Gostaria de fazer alguma atividade ao livre?',
+            normalRainy: 'Gostaria de assistir um filme?'
+        };
+
+        this.tempReferences = {
+            cold: 18,
+            hot: 30
+        };
+
+        this.badConditionsSlugs = [
+            'storm',
+            'snow',
+            'hail',
+            'rain',
+            'fog',
+            'cloud',
+            'cloudly_day',
+            'cloudly_night'
+        ];
     }
 
-    buildResponseByTempAndConditionSlug(temp, conditionSlug) {
-        if (temp <= tempReferences.cold) {
-            return suggestions.coldSun;
-        }
+    /**
+     * Build weatherData response
+     * @param {WeatherApiResponse} weatherApiResponse
+     */
+    buildWeatherData(weatherApiResponse) {
+        const response = new WeatherData;
 
-        if (temp > tempReferences.cold && temp < tempReferences.hot) {
-            if (badConditionsSlugs.includes(conditionSlug)) {
-                return suggestions.normalRainy;
-            }
-            return suggestions.normalSun;
-        }
+        response.celsiusTemperature = String(weatherApiResponse.celsiusTemperature) || '?';
+        response.condition = weatherApiResponse.weatherDescription || '?';
+        response.suggestion = this.getSuggestionBy(
+            weatherApiResponse.celsiusTemperature,
+            weatherApiResponse.weatherDescriptionSlug
+        );
 
-        if (temp >= tempReferences.hot) {
-            if (badConditionsSlugs.includes(conditionSlug)) {
-                return suggestions.hotRainy;
-            }
-            return suggestions.hotSun;
-        }
-
-        return '';
+        return response;
     }
 
     async getWeatherDataByCity(cityName) {
