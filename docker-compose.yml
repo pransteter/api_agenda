@@ -23,7 +23,7 @@ services:
       MONGO_PASSWORD: 'root123'
       MONGO_DB_NAME: 'schedule_main'
       WEATHER_API_URI: https://api.hgbrasil.com/weather
-      WEATHER_API_KEY: '7a4eddad'
+      WEATHER_API_KEY: 'baddbc11'
   api_agenda_database:
     image: mongo:4.0
     container_name: api_agenda_database
