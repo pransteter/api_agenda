@@ -1,117 +1,117 @@
-import { WeatherData } from './structures/weather-data';
-import { WeatherApiResponse } from '../integrations/structures/weather-api-response';
-import { WeatherApiClient } from '../integrations/weather-api-client';
+import {WeatherData} from './structures/weather-data';
+import {WeatherApiResponse} from '../integrations/structures/weather-api-response';
+import {WeatherApiClient} from '../integrations/weather-api-client';
 
 export class WeatherService {
-    constructor() {
-        this.suggestions = {
-            coldSun: 'Gostaria de tomar um chocolate quente?',
-            hotSun: 'Gostaria de ir à praia?',
-            hotRainy: 'Gostaria de tomar um sorvete?',
-            normalSun: 'Gostaria de fazer alguma atividade ao livre?',
-            normalRainy: 'Gostaria de assistir um filme?'
-        };
+  constructor() {
+    this.suggestions = {
+      coldSun: 'Gostaria de tomar um chocolate quente?',
+      hotSun: 'Gostaria de ir à praia?',
+      hotRainy: 'Gostaria de tomar um sorvete?',
+      normalSun: 'Gostaria de fazer alguma atividade ao livre?',
+      normalRainy: 'Gostaria de assistir um filme?',
+    };
 
-        this.tempReferences = {
-            cold: 18,
-            hot: 30
-        };
+    this.tempReferences = {
+      cold: 18,
+      hot: 30,
+    };
 
-        this.badConditionsSlugs = [
-            'storm',
-            'snow',
-            'hail',
-            'rain',
-            'fog',
-            'cloud',
-            'cloudly_day',
-            'cloudly_night'
-        ];
-    }
+    this.badConditionsSlugs = [
+      'storm',
+      'snow',
+      'hail',
+      'rain',
+      'fog',
+      'cloud',
+      'cloudly_day',
+      'cloudly_night',
+    ];
+  }
 
-    /**
+  /**
      * Get weather data from an external API
      * @param {String} cityName
-     * @returns {Promise<WeatherData>}
+     * @return {Promise<WeatherData>}
      */
-    async getWeatherDataByCity(cityName) {
-        const client = new WeatherApiClient;
+  async getWeatherDataByCity(cityName) {
+    const client = new WeatherApiClient;
 
-        return client.getWeatherDataByCity(cityName)
-            .then(result => this.buildWeatherData(result))
-            .catch(err => this.buildDefaultWeatherData(err.message));
-    }
+    return client.getWeatherDataByCity(cityName)
+        .then((result) => this.buildWeatherData(result))
+        .catch((err) => this.buildDefaultWeatherData(err.message));
+  }
 
-    /**
+  /**
      * Build weatherData response
      * @param {WeatherApiResponse} weatherApiResponse
-     * @returns {WeatherData}
+     * @return {WeatherData}
      */
-    buildWeatherData(weatherApiResponse) {
-        const weatherData = this.buildDefaultWeatherData();
+  buildWeatherData(weatherApiResponse) {
+    const weatherData = this.buildDefaultWeatherData();
 
-        if (weatherApiResponse.weatherDescription) {
-            weatherData.condition = weatherApiResponse.weatherDescription;
-        }
-
-        if (weatherApiResponse.celsiusTemperature) {
-            weatherData.celsiusTemperature = String(weatherApiResponse.celsiusTemperature)
-
-            if (weatherApiResponse.weatherDescriptionSlug) {
-                weatherData.suggestion = this.getSuggestionBy(
-                    weatherApiResponse.celsiusTemperature,
-                    weatherApiResponse.weatherDescriptionSlug
-                );
-            }
-        }
-
-        return weatherData;
+    if (weatherApiResponse.weatherDescription) {
+      weatherData.condition = weatherApiResponse.weatherDescription;
     }
 
-    /**
+    if (weatherApiResponse.celsiusTemperature) {
+      weatherData.celsiusTemperature = String(weatherApiResponse.celsiusTemperature);
+
+      if (weatherApiResponse.weatherDescriptionSlug) {
+        weatherData.suggestion = this.getSuggestionBy(
+            weatherApiResponse.celsiusTemperature,
+            weatherApiResponse.weatherDescriptionSlug,
+        );
+      }
+    }
+
+    return weatherData;
+  }
+
+  /**
      * Build a default WeatherData with an error message if necessary
      * @param {String} errorMessage
-     * @returns {WeatherData}
+     * @return {WeatherData}
      */
-    buildDefaultWeatherData(errorMessage) {
-        const weatherData = new WeatherData;
+  buildDefaultWeatherData(errorMessage) {
+    const weatherData = new WeatherData;
 
-        weatherData.celsiusTemperature = '?';
-        weatherData.condition = '?';
-        weatherData.suggestion = '?';
-        weatherData.errorMessage = errorMessage || '';
+    weatherData.celsiusTemperature = '?';
+    weatherData.condition = '?';
+    weatherData.suggestion = '?';
+    weatherData.errorMessage = errorMessage || '';
 
-        return weatherData;
-    }
+    return weatherData;
+  }
 
-    /**
+  /**
      * Get Suggestion By celsiusTemperature and weatherDescriptionSlug
      * @param {Number} celsiusTemperature
      * @param {String} weatherDescriptionSlug
-     * @returns {String}
+     * @return {String}
      */
-    getSuggestionBy(celsiusTemperature, weatherDescriptionSlug) {
-        if (celsiusTemperature <= this.tempReferences.cold) {
-            return this.suggestions.coldSun;
-        }
-
-        if (
-            celsiusTemperature > this.tempReferences.cold &&
-            celsiusTemperature < this.tempReferences.hot
-        ) {
-            if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
-                return this.suggestions.normalRainy;
-            }
-            return this.suggestions.normalSun;
-        }
-
-        if (celsiusTemperature >= this.tempReferences.hot) {
-            if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
-                return this.suggestions.hotRainy;
-            }
-            return this.suggestions.hotSun;
-        }
-
-        return '?';
+  getSuggestionBy(celsiusTemperature, weatherDescriptionSlug) {
+    if (celsiusTemperature <= this.tempReferences.cold) {
+      return this.suggestions.coldSun;
     }
+
+    if (
+      celsiusTemperature > this.tempReferences.cold &&
+            celsiusTemperature < this.tempReferences.hot
+    ) {
+      if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
+        return this.suggestions.normalRainy;
+      }
+      return this.suggestions.normalSun;
+    }
+
+    if (celsiusTemperature >= this.tempReferences.hot) {
+      if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
+        return this.suggestions.hotRainy;
+      }
+      return this.suggestions.hotSun;
+    }
+
+    return '?';
+  }
 }
