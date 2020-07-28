@@ -1,13 +1,13 @@
-import { Router as getRouter } from 'express';
+import {Router as getRouter} from 'express';
 
-import { ContactRoute } from '../../routes/contact-route';
+import {ContactRoute} from '../../routes/contact-route';
 import mainRoute from '../../routes/main-route';
 
 export default () => {
-    const router = getRouter();
+  const router = getRouter();
 
-    mainRoute(router);
-    new ContactRoute(router).attach();
+  mainRoute(router);
+  new ContactRoute(router).attach();
 
-    return router;
+  return router;
 };

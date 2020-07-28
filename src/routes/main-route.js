@@ -1,5 +1,5 @@
-import { mainController } from '../controllers/main-controller';
+import {mainController} from '../controllers/main-controller';
 
 export default (router) => {
-    router.get('/health', mainController.healthCheck);
-}
+  router.get('/health', mainController.healthCheck);
+};

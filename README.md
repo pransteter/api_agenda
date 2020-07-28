@@ -24,6 +24,16 @@ Rode o comando abaixo:
 
 `make tests`
 
+### Estilo de formatação do código:
+
+Caso queira apenas verificar possíveis erros de formatação, rode o comando:
+
+`make style-check`
+
+Para verificar e também corrigir automaticamente (quando possível), rode este:
+
+`make style-fix`
+
 ### Documentação da API:
 
 A documentação pode ser acessada através deste url:
