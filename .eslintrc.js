@@ -3,6 +3,7 @@ module.exports = {
   'env': {
     'es6': true,
     'node': true,
+    'jest': true,
   },
   'extends': ['eslint:recommended', 'google'],
   'globals': {
@@ -13,6 +14,11 @@ module.exports = {
     'ecmaVersion': 2018,
     'sourceType': 'module',
   },
+  'ignorePatterns': [
+    '**/node_modules/**',
+    '**/build/**',
+    '**/coverage/**',
+  ],
   'rules': {
   },
 };

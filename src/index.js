@@ -1,5 +1,5 @@
 import express from 'express';
-import { server } from './core/server';
+import {server} from './core/server';
 
 const app = express();
 

@@ -1,16 +1,19 @@
+/**
+ * RepositoryResponse class
+ */
 export class RepositoryResponse {
-    /**
-     * @property {Boolean} done
-     */
-    done = true;
+  /**
+   * @property {Boolean} done
+   */
+  done = true;
 
-    /**
-     * @property {String} errorMsg
-     */
-    errorMsg = '';
+  /**
+   * @property {String} errorMsg
+   */
+  errorMsg = '';
 
-    /**
-     * @property {*} result
-     */
-    result = null;
+  /**
+   * @property {*} result
+   */
+  result = null;
 }

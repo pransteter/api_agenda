@@ -1,16 +1,19 @@
+/**
+ * WeatherApiResponse structure class
+ */
 export class WeatherApiResponse {
-    /**
-     * @property {Number} celsiusTemperature
-     */
-    celsiusTemperature = null;
+  /**
+   * @property {Number} celsiusTemperature
+   */
+  celsiusTemperature = null;
 
-    /**
-     * @property {String} weatherDescription
-     */
-    weatherDescription = null;
+  /**
+   * @property {String} weatherDescription
+   */
+  weatherDescription = null;
 
-    /**
-     * @property {String} weatherDescriptionSlug
-     */
-    weatherDescriptionSlug = null;
+  /**
+   * @property {String} weatherDescriptionSlug
+   */
+  weatherDescriptionSlug = null;
 }

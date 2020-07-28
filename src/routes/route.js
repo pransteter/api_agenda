@@ -1,16 +1,17 @@
-import { Router } from 'express';
-
+/**
+ * Route "abstract" class
+ */
 export class Route {
-    /**
-     * @property {Router}
-     */
-    router;
+  /**
+   * @property {Router}
+   */
+  router;
 
-    /**
-     * Constructor method
-     * @param {Router} routers
-     */
-    constructor(router) {
-        this.router = router;
-    }
+  /**
+   * Constructor method
+   * @param {Router} router
+   */
+  constructor(router) {
+    this.router = router;
+  }
 }

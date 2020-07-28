@@ -1,8 +1,28 @@
 import {WeatherData} from './structures/weather-data';
-import {WeatherApiResponse} from '../integrations/structures/weather-api-response';
 import {WeatherApiClient} from '../integrations/weather-api-client';
 
+/**
+ * WeatherService class
+ */
 export class WeatherService {
+  /**
+   * @property {Object}
+   */
+  suggestions;
+
+  /**
+   * @property {Object}
+   */
+  tempReferences;
+
+  /**
+   * @property {Object}
+   */
+  badConditionsSlugs;
+
+  /**
+  * Constructor method
+  */
   constructor() {
     this.suggestions = {
       coldSun: 'Gostaria de tomar um chocolate quente?',
@@ -55,7 +75,9 @@ export class WeatherService {
     }
 
     if (weatherApiResponse.celsiusTemperature) {
-      weatherData.celsiusTemperature = String(weatherApiResponse.celsiusTemperature);
+      weatherData.celsiusTemperature = String(
+          weatherApiResponse.celsiusTemperature,
+      );
 
       if (weatherApiResponse.weatherDescriptionSlug) {
         weatherData.suggestion = this.getSuggestionBy(
@@ -99,14 +121,14 @@ export class WeatherService {
       celsiusTemperature > this.tempReferences.cold &&
             celsiusTemperature < this.tempReferences.hot
     ) {
-      if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
+      if (this.badConditionsSlugs.includes(weatherDescriptionSlug)) {
         return this.suggestions.normalRainy;
       }
       return this.suggestions.normalSun;
     }
 
     if (celsiusTemperature >= this.tempReferences.hot) {
-      if (badConditionsSlugs.includes(weatherDescriptionSlug)) {
+      if (this.badConditionsSlugs.includes(weatherDescriptionSlug)) {
         return this.suggestions.hotRainy;
       }
       return this.suggestions.hotSun;

@@ -14,3 +14,9 @@ test: ## Run all tests
 
 down: ## Turn off the docker environment
 	docker-compose down
+
+style-check: ## Check style errors with ESLint
+	docker exec api_agenda_app ./node_modules/.bin/eslint . --ext .js
+
+style-fix: ## Check style errors with ESLint
+	docker exec api_agenda_app ./node_modules/.bin/eslint . --ext .js --fix
