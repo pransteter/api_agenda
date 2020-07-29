@@ -1,6 +1,4 @@
 import express from 'express';
-import {server} from './core/server';
+import {Server} from './core/server';
 
-const app = express();
-
-server.run(app);
+new Server(express()).up();

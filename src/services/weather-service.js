@@ -8,46 +8,35 @@ export class WeatherService {
   /**
    * @property {Object}
    */
-  suggestions;
+  suggestions = {
+    coldSun: 'Gostaria de tomar um chocolate quente?',
+    hotSun: 'Gostaria de ir à praia?',
+    hotRainy: 'Gostaria de tomar um sorvete?',
+    normalSun: 'Gostaria de fazer alguma atividade ao livre?',
+    normalRainy: 'Gostaria de assistir um filme?',
+  };
 
   /**
    * @property {Object}
    */
-  tempReferences;
+  tempReferences = {
+    cold: 18,
+    hot: 30,
+  };
 
   /**
    * @property {Object}
    */
-  badConditionsSlugs;
-
-  /**
-  * Constructor method
-  */
-  constructor() {
-    this.suggestions = {
-      coldSun: 'Gostaria de tomar um chocolate quente?',
-      hotSun: 'Gostaria de ir à praia?',
-      hotRainy: 'Gostaria de tomar um sorvete?',
-      normalSun: 'Gostaria de fazer alguma atividade ao livre?',
-      normalRainy: 'Gostaria de assistir um filme?',
-    };
-
-    this.tempReferences = {
-      cold: 18,
-      hot: 30,
-    };
-
-    this.badConditionsSlugs = [
-      'storm',
-      'snow',
-      'hail',
-      'rain',
-      'fog',
-      'cloud',
-      'cloudly_day',
-      'cloudly_night',
-    ];
-  }
+  badConditionsSlugs = [
+    'storm',
+    'snow',
+    'hail',
+    'rain',
+    'fog',
+    'cloud',
+    'cloudly_day',
+    'cloudly_night',
+  ];
 
   /**
      * Get weather data from an external API

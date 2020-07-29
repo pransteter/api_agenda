@@ -1,5 +1,13 @@
-export const mainController = {
+/**
+ * MainController class
+ */
+export class MainController {
+  /**
+   * Check if the service is responding
+   * @param {Request} req
+   * @param {Response} res
+   */
   healthCheck(req, res) {
-    return res.status(200).send('It\'s working! \n');
-  },
-};
+    res.status(200).send('It\'s working! \n');
+  }
+}

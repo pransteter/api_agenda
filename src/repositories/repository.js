@@ -1,7 +1,6 @@
 import {EntityManager} from '../core/database/entity-manager';
 import {RepositoryResponse} from './structures/repository-response';
-// eslint-disable-next-line max-len
-import transformToSimpleStructure from './helpers/transform-to-simple-structure';
+import {Transform} from './helpers/transform';
 
 /**
  * Repository "abstract" class
@@ -75,7 +74,8 @@ export class Repository {
 
     return entityManagerPromise
         .then((result) => {
-          response.result = transformToSimpleStructure(result);
+          response.result = new Transform()
+              .mongoDocumentToSimpleStructure(result);
           return response;
         })
         .catch((err) => {

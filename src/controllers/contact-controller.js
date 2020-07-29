@@ -35,7 +35,7 @@ export class ContactController {
       return res.status(500).send(serviceResponse.errorMsg);
     }
 
-    return res.status(200).send(serviceResponse.result);
+    res.status(200).send(serviceResponse.result);
   }
 
   /**
@@ -52,7 +52,7 @@ export class ContactController {
       return res.status(400).send(serviceResponse.errorMsg);
     }
 
-    return res.status(201).send();
+    res.status(201).send();
   }
 
   /**
@@ -73,7 +73,7 @@ export class ContactController {
       return res.status(404).send(serviceResponse.errorMsg);
     }
 
-    return res.status(200).send(serviceResponse.result);
+    res.status(200).send(serviceResponse.result);
   }
 
   /**
@@ -98,7 +98,7 @@ export class ContactController {
       return res.status(404).send(serviceResponse.errorMsg);
     }
 
-    return res.status(204).send();
+    res.status(204).send();
   }
 
   /**
@@ -119,6 +119,6 @@ export class ContactController {
       return res.status(404).send(serviceResponse.errorMsg);
     }
 
-    return res.status(204).send();
+    res.status(204).send();
   }
 }
