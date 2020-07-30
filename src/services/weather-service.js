@@ -108,7 +108,7 @@ export class WeatherService {
 
     if (
       celsiusTemperature > this.tempReferences.cold &&
-            celsiusTemperature < this.tempReferences.hot
+      celsiusTemperature < this.tempReferences.hot
     ) {
       if (this.badConditionsSlugs.includes(weatherDescriptionSlug)) {
         return this.suggestions.normalRainy;

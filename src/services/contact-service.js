@@ -1,5 +1,5 @@
 import {WeatherService} from './weather-service';
-import buildContactFilterQuery from './helpers/build-contact-filter-query';
+import {ContactQueryBuilder} from './helpers/contact-query-builder';
 
 /**
  * ContactService class
@@ -24,7 +24,7 @@ export class ContactService {
    */
   async getAll(rawQuery) {
     const filterQuery = (typeof rawQuery === 'object') ?
-            buildContactFilterQuery(rawQuery) :
+            new ContactQueryBuilder(rawQuery).build() :
             {};
 
     return this.repository.getAll({...filterQuery, enabled: true});
@@ -36,12 +36,12 @@ export class ContactService {
    */
   async getOne(id) {
     const response = await this.repository.getOne(id);
-    const contact = response.done ? response.result : {};
+    const contact = response.done && response.result ? response.result : {};
 
     if (contact.address && contact.address.city) {
       const apiClient = new WeatherService;
       contact.address.weatherData = await apiClient.getWeatherDataByCity(
-          contact.address && contact.address.city,
+          contact.address.city,
       );
     }
 
