@@ -1,5 +1,16 @@
-import {mainController} from '../controllers/main-controller';
+import {MainController} from '../controllers/main-controller';
+import {Route} from './route';
 
-export default (router) => {
-  router.get('/health', mainController.healthCheck);
-};
+/**
+ * MainRoute class
+ */
+export class MainRoute extends Route {
+  /**
+   * Attach all main routes in express router
+   */
+  attach() {
+    this.router.get('/health', (req, res) => {
+      (new MainController).healthCheck(req, res);
+    });
+  }
+}

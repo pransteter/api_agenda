@@ -17,10 +17,10 @@ export class WeatherApiClient {
   }
 
   /**
-     * Get weather data by city
-     * @param {String} cityName
-     * @return {WeatherApiResponse}
-     */
+   * Get weather data by city
+   * @param {String} cityName
+   * @return {WeatherApiResponse}
+   */
   async getWeatherDataByCity(cityName) {
     const normalizedCity = cityName.normalize(
         'NFD',
