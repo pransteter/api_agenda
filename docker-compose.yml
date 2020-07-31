@@ -15,15 +15,11 @@ services:
       api_agenda_net:
         ipv4_address: 172.38.0.2
     environment:
-      NAME: LOCAL
-      NODE_ENV: development
       MONGO_IP: 172.38.0.4
       MONGO_PORT: 27017
       MONGO_USER: 'admin'
       MONGO_PASSWORD: 'root123'
       MONGO_DB_NAME: 'schedule_main'
-      WEATHER_API_URI: https://api.hgbrasil.com/weather
-      WEATHER_API_KEY: 'baddbc11'
   api_agenda_database:
     image: mongo:4.0
     container_name: api_agenda_database

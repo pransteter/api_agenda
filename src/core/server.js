@@ -1,6 +1,7 @@
 import {RoutesMiddleware} from './middlewares/routes-middleware';
 import {MongoConnection} from './database/mongo-connection';
 import Express from 'express';
+import {config} from 'dotenv';
 
 /**
  * Server class
@@ -27,6 +28,9 @@ export class Server {
    */
   constructor(app) {
     this.app = app;
+
+    config();
+
     this.mongoConnection = new MongoConnection();
 
     const routesMiddleware = new RoutesMiddleware();
